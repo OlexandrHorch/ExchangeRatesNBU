@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <title th:text="${title}">Exchange Rates NBU</title>
+</head>
+
+<body bgcolor="#acf5d5">
+
+<form action="/" method="get">
+
+    <!--Input data-->
+    <table align="center" width="95%" cellpadding="5">
+        <tr>
+            <th height="50" colspan="2"><font size="5">Офіційний курс валют</font></th>
+        </tr>
+
+        <!--currency code-->
+        <tr>
+            <td align="right" width="50%">Валюта</td>
+            <td align="left" width="50%">
+                <select name="currencyLiteralCodeRequest">
+                    <div th:if="${currency.getCurrencyLiteralCode() != null}">
+                        <option selected="selected"
+                                th:text="${currency.getCurrencyLiteralCode().description}"
+                                th:value="${currency.getCurrencyLiteralCode()}">
+                    </div>
+                    <option th:each="CurrencyLC : ${T(com.exchangeratesnbu.entity.CurrencyLiteralCode).values()}"
+                            th:text="${CurrencyLC.description}"
+                            th:value="${CurrencyLC}">
+                </select>
+            </td>
+        </tr>
+
+        <!--currency data-->
+        <tr>
+            <td align="right">Дата</td>
+            <td align="left">
+                <input type="date" size="23" name="currencyExchangeDateRequest"
+                       th:value="${currency.getCurrencyExchangeDate()}">
+            </td>
+        </tr>
+
+        <!--total in UAH-->
+        <tr>
+            <td align="right">Сума в гривнях</td>
+            <td align="left">
+                <div th:if="${currency.getCurrencyTotalInUAH() != null}">
+                    <input type="text" size="23" name="currencyTotalInUAH"
+                           th:value="${currency.getCurrencyTotalInUAH()}">
+                </div>
+                <div th:if="${currency.getCurrencyTotalInUAH() == null}">
+                    <input type="text" size="23" name="currencyTotalInUAH"
+                           placeholder="введіть суму в грн.">
+                </div>
+            </td>
+        </tr>
+
+        <!--button-->
+        <tr>
+            <td align="center" colspan="2">
+                <button type="submit"><b>Виконати</b></button>
+            </td>
+        </tr>
+    </table>
+
+
+    <!--Response-->
+    <br>
+    <table align="center" width="50%" cellpadding="4">
+        <div th:if="${currency.getCurrencyExchangeDate() != null}">
+            <div>
+                <tr>
+                    <td align="center" width="12%">Код цифровий</td>
+                    <td align="center" width="12%">Код літерний</td>
+                    <td align="center" width="25%">Назва валюти</td>
+                    <td align="center" width="25%">Офіційний курс</td>
+                    <td align="center" width="25%">Еквівалент гривневої суми в валюті</td>
+                </tr>
+
+                <tr>
+                    <td align="center">
+                        <text th:text="${currency.getCurrencyNumeralCode()}"></text>
+                    </td>
+                    <td align="center">
+                        <text th:text="${currency.getCurrencyLiteralCode()}"></text>
+                    </td>
+                    <td align="center">
+                        <text th:text="${currency.getCurrencyName()}"></text>
+                    </td>
+                    <td align="center">
+                        <text th:text="${currency.getCurrencyRate()}"></text>
+                    </td>
+                    <td align="center">
+                        <text th:text="${currency.getCurrencyEquivalentInCurrency()}"></text>
+                    </td>
+                </tr>
+            </div>
+        </div>
+    </table>
+</form>
+</body>
+</html>
