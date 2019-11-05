@@ -20,7 +20,8 @@ public class HomeController {
     @GetMapping("/")
     public ModelAndView index(@RequestParam(required = false) CurrencyLiteralCode currencyLiteralCodeRequest,
                               @RequestParam(required = false) String currencyExchangeDateRequest,
-                              @RequestParam(required = false) String currencyTotalInUAH) {
+                              @RequestParam(required = false) String currencyTotalInUAH,
+                              @RequestParam(required = false) Boolean saveToTable) {
         ModelAndView result = new ModelAndView("home");
         Currency currency = new Currency();
 
@@ -33,6 +34,9 @@ public class HomeController {
         }
         if (currencyTotalInUAH != null) {
             currency.setCurrencyTotalInUAH(currencyTotalInUAH);
+        }
+        if (saveToTable != null) {
+            currency.setSaveToTable(saveToTable);
         }
 
         result.addObject("currency", checkingInputData(currency));
@@ -51,11 +55,12 @@ public class HomeController {
 
         if (currency.getCurrencyRate() != null && !currency.getCurrencyTotalInUAH().equals("")) {
             currency = currencyRequest.makeEquivalent(currency);
-
-            try {
-                serviceForExportToExcel.createExcelFile(currency);
-            } catch (IOException e) {
-                System.out.println("Excel File не створено!");
+            if (currency.getSaveToTable()){
+                try {
+                    serviceForExportToExcel.createExcelFile(currency);
+                } catch (IOException e) {
+                    System.out.println("File not saved!");
+                }
             }
 
         } else {

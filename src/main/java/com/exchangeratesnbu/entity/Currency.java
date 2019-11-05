@@ -35,4 +35,7 @@ public class Currency {
 
     @Column(name = "currencyEquivalentInCurrency")
     private Double currencyEquivalentInCurrency;
+
+    @Column(name = "saveToTable")
+    private Boolean saveToTable;
 }

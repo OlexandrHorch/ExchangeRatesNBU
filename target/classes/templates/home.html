@@ -9,7 +9,6 @@
 <body bgcolor="#acf5d5">
 
 <form action="/" method="get">
-
     <!--Input data-->
     <table align="center" width="95%" cellpadding="5">
         <tr>
@@ -50,9 +49,31 @@
                     <input type="text" size="23" name="currencyTotalInUAH"
                            th:value="${currency.getCurrencyTotalInUAH()}">
                 </div>
+
                 <div th:if="${currency.getCurrencyTotalInUAH() == null}">
                     <input type="text" size="23" name="currencyTotalInUAH"
                            placeholder="введіть суму в грн.">
+                </div>
+            </td>
+        </tr>
+
+        <!--save to table-->
+        <tr>
+            <td align="right">Зберегти результат в таблицю</td>
+            <td align="left">
+                <div th:if="${currency.getSaveToTable() == true}">
+                    <input type="radio" name="saveToTable" value="true" checked> так
+                    <input type="radio" name="saveToTable" value="false"> ні
+                </div>
+
+                <div th:if="${currency.getSaveToTable() == false}">
+                    <input type="radio" name="saveToTable" value="true"> так
+                    <input type="radio" name="saveToTable" value="false" checked> ні
+                </div>
+
+                <div th:if="${currency.getSaveToTable() == null}">
+                    <input type="radio" name="saveToTable" value="true"> так
+                    <input type="radio" name="saveToTable" value="false" checked> ні
                 </div>
             </td>
         </tr>
@@ -72,11 +93,11 @@
         <div th:if="${currency.getCurrencyExchangeDate() != null}">
             <div>
                 <tr>
-                    <td align="center" width="12%">Код цифровий</td>
-                    <td align="center" width="12%">Код літерний</td>
-                    <td align="center" width="25%">Назва валюти</td>
-                    <td align="center" width="25%">Офіційний курс</td>
-                    <td align="center" width="25%">Еквівалент гривневої суми в валюті</td>
+                    <td align="center" width="12%"><b>Код цифровий</b></td>
+                    <td align="center" width="12%"><b>Код літерний</b></td>
+                    <td align="center" width="25%"><b>Назва валюти</b></td>
+                    <td align="center" width="25%"><b>Офіційний курс</b></td>
+                    <td align="center" width="25%"><b>Еквівалент гривневої суми в валюті</b></td>
                 </tr>
 
                 <tr>

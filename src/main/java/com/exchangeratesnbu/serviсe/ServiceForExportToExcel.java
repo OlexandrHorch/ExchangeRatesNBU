@@ -170,7 +170,8 @@ public class ServiceForExportToExcel {
 
     // Method for creating and record file
     private void createAndRecordFile(HSSFWorkbook workbook, Currency currency) throws IOException {
-        String filePathName = chooseDirectory() + "/ExchangeRatesNBU_"
+        String filePathName = chooseDirectory()
+                + "/ExchangeRatesNBU_"
                 + currency.getCurrencyExchangeDate() + "_"
                 + currency.getCurrencyLiteralCode()
                 + ".xls";
@@ -179,7 +180,6 @@ public class ServiceForExportToExcel {
         workbook.write(outFile);
         workbook.close();
         outFile.close();
-        System.out.println("A file was created " + file.getAbsolutePath());
     }
 
 
