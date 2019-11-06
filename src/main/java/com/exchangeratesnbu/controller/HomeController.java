@@ -18,11 +18,39 @@ public class HomeController {
     private ServiceForDate serviceForDate = new ServiceForDate();
 
     @GetMapping("/")
-    public ModelAndView index(@RequestParam(required = false) CurrencyLiteralCode currencyLiteralCodeRequest,
-                              @RequestParam(required = false) String currencyExchangeDateRequest,
-                              @RequestParam(required = false) String currencyTotalInUAH,
-                              @RequestParam(required = false) Boolean saveToTable) {
+    public ModelAndView home(@RequestParam(required = false) CurrencyLiteralCode currencyLiteralCodeRequest,
+                             @RequestParam(required = false) String currencyExchangeDateRequest,
+                             @RequestParam(required = false) String currencyTotalInUAH,
+                             @RequestParam(required = false) Boolean saveToTable) {
         ModelAndView result = new ModelAndView("home");
+        Currency currency = new Currency();
+
+        // filling the object with input values
+        if (currencyLiteralCodeRequest != null) {
+            currency.setCurrencyLiteralCode(currencyLiteralCodeRequest);
+        }
+        if (currencyExchangeDateRequest != null) {
+            currency.setCurrencyExchangeDate(currencyExchangeDateRequest);
+        }
+        if (currencyTotalInUAH != null) {
+            currency.setCurrencyTotalInUAH(currencyTotalInUAH);
+        }
+        if (saveToTable != null) {
+            currency.setSaveToTable(saveToTable);
+        }
+
+        result.addObject("currency", checkingInputData(currency));
+
+        return result;
+    }
+
+
+    @GetMapping("/eng")
+    public ModelAndView homeEng(@RequestParam(required = false) CurrencyLiteralCode currencyLiteralCodeRequest,
+                                @RequestParam(required = false) String currencyExchangeDateRequest,
+                                @RequestParam(required = false) String currencyTotalInUAH,
+                                @RequestParam(required = false) Boolean saveToTable) {
+        ModelAndView result = new ModelAndView("homeEng");
         Currency currency = new Currency();
 
         // filling the object with input values
@@ -55,7 +83,7 @@ public class HomeController {
 
         if (currency.getCurrencyRate() != null && !currency.getCurrencyTotalInUAH().equals("")) {
             currency = currencyRequest.makeEquivalent(currency);
-            if (currency.getSaveToTable()){
+            if (currency.getSaveToTable()) {
                 try {
                     serviceForExportToExcel.createExcelFile(currency);
                 } catch (IOException e) {

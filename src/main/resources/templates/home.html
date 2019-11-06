@@ -7,6 +7,27 @@
 </head>
 
 <body bgcolor="#acf5d5">
+<header>
+    <table align="center" width="95%" cellpadding="5">
+        <tr>
+            <td width="90%"></td>
+            <td width="10%">
+                <ul>
+                    <li type="disc">
+                        <a title="сайт українською" href="/" class="active">
+                            <b><span style="color: black">Укр</span></b>
+                        </a>
+                    </li>
+                    <li type="circle">
+                        <a title="site in english" href="/eng">
+                            <span style="color: grey">Eng</span>
+                        </a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</header>
 
 <form action="/" method="get">
     <!--Input data-->
@@ -108,7 +129,7 @@
                         <text th:text="${currency.getCurrencyLiteralCode()}"></text>
                     </td>
                     <td align="center">
-                        <text th:text="${currency.getCurrencyName()}"></text>
+                        <text th:text="${currency.getCurrencyLiteralCode().description}"></text>
                     </td>
                     <td align="center">
                         <text th:text="${currency.getCurrencyRate()}"></text>
