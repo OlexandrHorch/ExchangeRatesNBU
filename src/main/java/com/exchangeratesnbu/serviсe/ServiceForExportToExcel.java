@@ -13,19 +13,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ServiceForExportToExcel {
-    public void createExcelFile(Currency currency) throws IOException {
+    public void createExcelFile(Currency currency, String language) throws IOException {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("exchange");
 
-        fillingCellsTitleRow(workbook, sheet);
-        fillingCellsWithData(workbook, sheet, currency);
+        fillingCellsTitleRow(workbook, sheet, language);
+        fillingCellsWithData(workbook, sheet, currency, language);
         setColumnWidth(sheet);
         createAndRecordFile(workbook, currency);
     }
 
 
     // Method for filling cells title row
-    private void fillingCellsTitleRow(HSSFWorkbook workbook, HSSFSheet sheet) {
+    private void fillingCellsTitleRow(HSSFWorkbook workbook, HSSFSheet sheet, String language) {
         Row row;
         Cell cell;
         HSSFCellStyle styleForTitle = createStyleForTitle(workbook);
@@ -35,37 +35,71 @@ public class ServiceForExportToExcel {
         // filling cells
         // Numeral code
         cell = row.createCell(0, CellType.STRING);
-        cell.setCellValue("Код цифровий");
+        if (language.equals("ukr")) {
+            cell.setCellValue("Код цифровий");
+        } else if (language.equals("eng")) {
+            cell.setCellValue("Numeral code");
+        }
         cell.setCellStyle(styleForTitle);
+
         // Literal code
         cell = row.createCell(1, CellType.STRING);
-        cell.setCellValue("Код літерний");
+        if (language.equals("ukr")) {
+            cell.setCellValue("Код літерний");
+        } else if (language.equals("eng")) {
+            cell.setCellValue("Numeral code");
+        }
         cell.setCellStyle(styleForTitle);
-        // Name
+
+        // Currency name
         cell = row.createCell(2, CellType.STRING);
-        cell.setCellValue("Назва валюти");
+        if (language.equals("ukr")) {
+            cell.setCellValue("Назва валюти");
+        } else if (language.equals("eng")) {
+            cell.setCellValue("Currency name");
+        }
         cell.setCellStyle(styleForTitle);
-        // Rate
+
+        // Currency rate
         cell = row.createCell(3, CellType.NUMERIC);
-        cell.setCellValue("Офіційний курс");
+        if (language.equals("ukr")) {
+            cell.setCellValue("Курс валюти");
+        } else if (language.equals("eng")) {
+            cell.setCellValue("Currency rate");
+        }
         cell.setCellStyle(styleForTitle);
+
         // Total in UAH
         cell = row.createCell(4, CellType.NUMERIC);
-        cell.setCellValue("Сума в гривні");
+        if (language.equals("ukr")) {
+            cell.setCellValue("Сума в гривні");
+        } else if (language.equals("eng")) {
+            cell.setCellValue("Total in UAH");
+        }
         cell.setCellStyle(styleForTitle);
+
         // Equivalent in currency
         cell = row.createCell(5, CellType.NUMERIC);
-        cell.setCellValue("Еквівалент гривневої суми в валюті");
+        if (language.equals("ukr")) {
+            cell.setCellValue("Еквівалент в валюті");
+        } else if (language.equals("eng")) {
+            cell.setCellValue("Equivalent in currency");
+        }
         cell.setCellStyle(styleForTitle);
+
         // Exchange date
         cell = row.createCell(6, CellType.STRING);
-        cell.setCellValue("Дата");
+        if (language.equals("ukr")) {
+            cell.setCellValue("Дата");
+        } else if (language.equals("eng")) {
+            cell.setCellValue("Date");
+        }
         cell.setCellStyle(styleForTitle);
     }
 
 
     // Method for filling cells with data from collection
-    private void fillingCellsWithData(HSSFWorkbook workbook, HSSFSheet sheet, Currency currency) {
+    private void fillingCellsWithData(HSSFWorkbook workbook, HSSFSheet sheet, Currency currency, String language) {
         Row row;
         Cell cell;
         HSSFCellStyle styleForOtherRow = createStyleForOtherRow(workbook);
@@ -77,26 +111,36 @@ public class ServiceForExportToExcel {
         cell = row.createCell(0, CellType.STRING);
         cell.setCellValue(currency.getCurrencyNumeralCode());
         cell.setCellStyle(styleForOtherRow);
+
         // Literal code
         cell = row.createCell(1, CellType.STRING);
         cell.setCellValue(currency.getCurrencyLiteralCode().name());
         cell.setCellStyle(styleForOtherRow);
-        // Name
+
+        // Currency name
         cell = row.createCell(2, CellType.STRING);
-        cell.setCellValue(currency.getCurrencyName());
+        if (language.equals("ukr")) {
+            cell.setCellValue(currency.getCurrencyLiteralCode().getDescription());
+        } else if (language.equals("eng")) {
+            cell.setCellValue(currency.getCurrencyLiteralCode().getDescriptionEng());
+        }
         cell.setCellStyle(styleForOtherRow);
-        // Rate
+
+        // Currency rate
         cell = row.createCell(3, CellType.NUMERIC);
         cell.setCellValue(currency.getCurrencyRate());
         cell.setCellStyle(styleForOtherRow);
+
         // Total in UAH
         cell = row.createCell(4, CellType.NUMERIC);
         cell.setCellValue(currency.getCurrencyTotalInUAH());
         cell.setCellStyle(styleForOtherRow);
+
         // Equivalent in currency
         cell = row.createCell(5, CellType.NUMERIC);
         cell.setCellValue(currency.getCurrencyEquivalentInCurrency());
         cell.setCellStyle(styleForOtherRow);
+
         // Exchange date
         cell = row.createCell(6, CellType.STRING);
         cell.setCellValue(currency.getCurrencyExchangeDate());

@@ -14,6 +14,7 @@ import java.io.IOException;
 
 @Controller
 public class HomeController {
+    private String language;
     private CurrencyRequest currencyRequest = new CurrencyRequest();
     private ServiceForDate serviceForDate = new ServiceForDate();
 
@@ -39,7 +40,7 @@ public class HomeController {
             currency.setSaveToTable(saveToTable);
         }
 
-        result.addObject("currency", checkingInputData(currency));
+        result.addObject("currency", checkingInputData(currency, "ukr"));
 
         return result;
     }
@@ -67,14 +68,14 @@ public class HomeController {
             currency.setSaveToTable(saveToTable);
         }
 
-        result.addObject("currency", checkingInputData(currency));
+        result.addObject("currency", checkingInputData(currency, "eng"));
 
         return result;
     }
 
 
     // Method for checking input data
-    private Currency checkingInputData(Currency currency) {
+    private Currency checkingInputData(Currency currency, String language) {
         ServiceForExportToExcel serviceForExportToExcel = new ServiceForExportToExcel();
         if (currency.getCurrencyLiteralCode() != null && currency.getCurrencyExchangeDate() != null) {
             currency.setCurrencyExchangeDate(serviceForDate.checkingExchangeDate(currency.getCurrencyExchangeDate()));
@@ -85,7 +86,7 @@ public class HomeController {
             currency = currencyRequest.makeEquivalent(currency);
             if (currency.getSaveToTable()) {
                 try {
-                    serviceForExportToExcel.createExcelFile(currency);
+                    serviceForExportToExcel.createExcelFile(currency, language);
                 } catch (IOException e) {
                     System.out.println("File not saved!");
                 }
