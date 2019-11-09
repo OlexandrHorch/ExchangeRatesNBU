@@ -13,6 +13,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ServiceForExportToExcel {
+    private String directoryToSaveFile;
+
+
     public void createExcelFile(Currency currency, String language) throws IOException {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("exchange");
@@ -20,7 +23,7 @@ public class ServiceForExportToExcel {
         fillingCellsTitleRow(workbook, sheet, language);
         fillingCellsWithData(workbook, sheet, currency, language);
         setColumnWidth(sheet);
-        createAndRecordFile(workbook, currency);
+        createAndRecordFile(workbook, currency, language);
     }
 
 
@@ -213,25 +216,39 @@ public class ServiceForExportToExcel {
 
 
     // Method for creating and record file
-    private void createAndRecordFile(HSSFWorkbook workbook, Currency currency) throws IOException {
-        String filePathName = chooseDirectory()
-                + "/ExchangeRatesNBU_"
-                + currency.getCurrencyExchangeDate() + "_"
-                + currency.getCurrencyLiteralCode()
-                + ".xls";
-        File file = new File(filePathName);
-        FileOutputStream outFile = new FileOutputStream(file);
-        workbook.write(outFile);
+    private void createAndRecordFile(HSSFWorkbook workbook, Currency currency, String language) throws IOException {
+        chooseDirectory(language);
+
+        if (directoryToSaveFile != null) {
+            String filePathName = directoryToSaveFile
+                    + "/ExchangeRatesNBU_"
+                    + currency.getCurrencyExchangeDate() + "_"
+                    + currency.getCurrencyLiteralCode()
+                    + ".xls";
+            File file = new File(filePathName);
+            FileOutputStream outFile = new FileOutputStream(file);
+            workbook.write(outFile);
+            outFile.close();
+        }
+
         workbook.close();
-        outFile.close();
     }
 
 
     // Method for choosing directory
-    private String chooseDirectory() {
+    private void chooseDirectory(String language) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(1);
-        fileChooser.showDialog(null, "Вибрати катклог");
-        return fileChooser.getSelectedFile().getPath();
+        if (language.equals("ukr")) {
+            fileChooser.showDialog(null, "Вибрати каталог");
+        } else if (language.equals("eng")) {
+            fileChooser.showDialog(null, "Choose directory");
+        }
+
+        try {
+            directoryToSaveFile = fileChooser.getSelectedFile().getPath();
+        } catch (NullPointerException e) {
+            System.out.println("Directory don't chosen!");
+        }
     }
 }
