@@ -14,9 +14,9 @@ import java.io.IOException;
 
 @Controller
 public class HomeController {
-    private String language;
     private CurrencyRequest currencyRequest = new CurrencyRequest();
     private ServiceForDate serviceForDate = new ServiceForDate();
+    private Currency currency = new Currency();
 
     @GetMapping("/")
     public ModelAndView home(@RequestParam(required = false) CurrencyLiteralCode currencyLiteralCodeRequest,
@@ -24,9 +24,10 @@ public class HomeController {
                              @RequestParam(required = false) String currencyTotalInUAH,
                              @RequestParam(required = false) Boolean saveToTable) {
         ModelAndView result = new ModelAndView("home");
-        Currency currency = new Currency();
 
-        // filling the object with input values
+        // filling the object with input values.
+        currency.setCurrentDate(serviceForDate.generateCurrentDate());
+
         if (currencyLiteralCodeRequest != null) {
             currency.setCurrencyLiteralCode(currencyLiteralCodeRequest);
         }
@@ -52,9 +53,10 @@ public class HomeController {
                                 @RequestParam(required = false) String currencyTotalInUAH,
                                 @RequestParam(required = false) Boolean saveToTable) {
         ModelAndView result = new ModelAndView("homeEng");
-        Currency currency = new Currency();
 
-        // filling the object with input values
+        // Filling the object with input values.
+        currency.setCurrentDate(serviceForDate.generateCurrentDate());
+
         if (currencyLiteralCodeRequest != null) {
             currency.setCurrencyLiteralCode(currencyLiteralCodeRequest);
         }
@@ -74,9 +76,10 @@ public class HomeController {
     }
 
 
-    // Method for checking input data
+    // Method for checking input data.
     private Currency checkingInputData(Currency currency, String language) {
         ServiceForExportToExcel serviceForExportToExcel = new ServiceForExportToExcel();
+
         if (currency.getCurrencyLiteralCode() != null && currency.getCurrencyExchangeDate() != null) {
             currency.setCurrencyExchangeDate(serviceForDate.checkingExchangeDate(currency.getCurrencyExchangeDate()));
             currency = currencyRequest.getExchangeRateNBUByCurrencyCodeAndData(currency);
@@ -88,7 +91,6 @@ public class HomeController {
                 try {
                     serviceForExportToExcel.createExcelFile(currency, language);
                 } catch (IOException e) {
-                    System.out.println("File not saved!");
                 }
             }
 

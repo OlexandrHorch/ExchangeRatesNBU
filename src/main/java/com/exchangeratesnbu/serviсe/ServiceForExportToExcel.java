@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class ServiceForExportToExcel {
     private String directoryToSaveFile;
+    private ServiceForDate serviceForDate = new ServiceForDate();
 
 
     public void createExcelFile(Currency currency, String language) throws IOException {
@@ -27,7 +28,7 @@ public class ServiceForExportToExcel {
     }
 
 
-    // Method for filling cells title row
+    // Method for filling cells title row.
     private void fillingCellsTitleRow(HSSFWorkbook workbook, HSSFSheet sheet, String language) {
         Row row;
         Cell cell;
@@ -35,8 +36,7 @@ public class ServiceForExportToExcel {
         row = sheet.createRow(0);
         row.setHeightInPoints(60);
 
-        // filling cells
-        // Numeral code
+        // Filling cell numeral code.
         cell = row.createCell(0, CellType.STRING);
         if (language.equals("ukr")) {
             cell.setCellValue("Код цифровий");
@@ -45,7 +45,7 @@ public class ServiceForExportToExcel {
         }
         cell.setCellStyle(styleForTitle);
 
-        // Literal code
+        // Filling cell literal code.
         cell = row.createCell(1, CellType.STRING);
         if (language.equals("ukr")) {
             cell.setCellValue("Код літерний");
@@ -54,7 +54,7 @@ public class ServiceForExportToExcel {
         }
         cell.setCellStyle(styleForTitle);
 
-        // Currency name
+        // Filling cell currency name.
         cell = row.createCell(2, CellType.STRING);
         if (language.equals("ukr")) {
             cell.setCellValue("Назва валюти");
@@ -63,7 +63,7 @@ public class ServiceForExportToExcel {
         }
         cell.setCellStyle(styleForTitle);
 
-        // Currency rate
+        // Filling cell currency rate.
         cell = row.createCell(3, CellType.NUMERIC);
         if (language.equals("ukr")) {
             cell.setCellValue("Курс валюти");
@@ -72,7 +72,7 @@ public class ServiceForExportToExcel {
         }
         cell.setCellStyle(styleForTitle);
 
-        // Total in UAH
+        // Filling cell total in UAH.
         cell = row.createCell(4, CellType.NUMERIC);
         if (language.equals("ukr")) {
             cell.setCellValue("Сума в гривні");
@@ -81,7 +81,7 @@ public class ServiceForExportToExcel {
         }
         cell.setCellStyle(styleForTitle);
 
-        // Equivalent in currency
+        // Filling cell equivalent in currency.
         cell = row.createCell(5, CellType.NUMERIC);
         if (language.equals("ukr")) {
             cell.setCellValue("Еквівалент в валюті");
@@ -90,7 +90,7 @@ public class ServiceForExportToExcel {
         }
         cell.setCellStyle(styleForTitle);
 
-        // Exchange date
+        // Filling cell exchange date.
         cell = row.createCell(6, CellType.STRING);
         if (language.equals("ukr")) {
             cell.setCellValue("Дата");
@@ -101,7 +101,7 @@ public class ServiceForExportToExcel {
     }
 
 
-    // Method for filling cells with data from collection
+    // Method for filling cells with data.
     private void fillingCellsWithData(HSSFWorkbook workbook, HSSFSheet sheet, Currency currency, String language) {
         Row row;
         Cell cell;
@@ -109,18 +109,17 @@ public class ServiceForExportToExcel {
         row = sheet.createRow(1);
         row.setHeightInPoints(15);
 
-        // Filling cells
-        // Numeral code
+        // Filling cell numeral code.
         cell = row.createCell(0, CellType.STRING);
         cell.setCellValue(currency.getCurrencyNumeralCode());
         cell.setCellStyle(styleForOtherRow);
 
-        // Literal code
+        // Filling cell literal code.
         cell = row.createCell(1, CellType.STRING);
         cell.setCellValue(currency.getCurrencyLiteralCode().name());
         cell.setCellStyle(styleForOtherRow);
 
-        // Currency name
+        // Filling cell currency name.
         cell = row.createCell(2, CellType.STRING);
         if (language.equals("ukr")) {
             cell.setCellValue(currency.getCurrencyLiteralCode().getDescription());
@@ -129,47 +128,47 @@ public class ServiceForExportToExcel {
         }
         cell.setCellStyle(styleForOtherRow);
 
-        // Currency rate
+        // Filling cell currency rate.
         cell = row.createCell(3, CellType.NUMERIC);
         cell.setCellValue(currency.getCurrencyRate());
         cell.setCellStyle(styleForOtherRow);
 
-        // Total in UAH
+        // Filling cell total in UAH.
         cell = row.createCell(4, CellType.NUMERIC);
         cell.setCellValue(currency.getCurrencyTotalInUAH());
         cell.setCellStyle(styleForOtherRow);
 
-        // Equivalent in currency
+        // Filling cell equivalent in currency.
         cell = row.createCell(5, CellType.NUMERIC);
         cell.setCellValue(currency.getCurrencyEquivalentInCurrency());
         cell.setCellStyle(styleForOtherRow);
 
-        // Exchange date
+        // Filling cell exchange date.
         cell = row.createCell(6, CellType.STRING);
-        cell.setCellValue(currency.getCurrencyExchangeDate());
+        cell.setCellValue(serviceForDate.transformDateFormat(currency.getCurrencyExchangeDate()));
         cell.setCellStyle(styleForOtherRow);
     }
 
 
-    // Method for setting style for title row
+    // Method for setting style for title row.
     private HSSFCellStyle createStyleForTitle(HSSFWorkbook workbook) {
         HSSFCellStyle style = workbook.createCellStyle();
 
-        // Setting wrapping
+        // Setting wrapping.
         style.setWrapText(true);
 
-        // Setting alignment
+        // Setting alignment.
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
 
-        // Setting style for font
+        // Setting style for font.
         HSSFFont font = workbook.createFont();
         font.setFontName("Times New Roman");
         font.setFontHeightInPoints((short) 15);
         font.setBold(true);
         style.setFont(font);
 
-        // Setting style for border
+        // Setting style for border.
         style.setBorderBottom(BorderStyle.THIN);
         style.setBorderTop(BorderStyle.THIN);
         style.setBorderLeft(BorderStyle.THIN);
@@ -179,21 +178,21 @@ public class ServiceForExportToExcel {
     }
 
 
-    // Method for setting style for other row
+    // Method for setting style for other row.
     private HSSFCellStyle createStyleForOtherRow(HSSFWorkbook workbook) {
         HSSFCellStyle style = workbook.createCellStyle();
 
-        // Setting alignment
+        // Setting alignment.
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
 
-        // Setting style for font
+        // Setting style for font.
         HSSFFont font = workbook.createFont();
         font.setFontName("Times New Roman");
         font.setFontHeightInPoints((short) 10);
         style.setFont(font);
 
-        // Setting style for border
+        // Setting style for border.
         style.setBorderBottom(BorderStyle.THIN);
         style.setBorderTop(BorderStyle.THIN);
         style.setBorderLeft(BorderStyle.THIN);
@@ -203,7 +202,7 @@ public class ServiceForExportToExcel {
     }
 
 
-    // Method for setting column width
+    // Method for setting column width.
     private void setColumnWidth(HSSFSheet sheet) {
         sheet.setColumnWidth(0, 4000);
         sheet.setColumnWidth(1, 4000);
@@ -215,7 +214,7 @@ public class ServiceForExportToExcel {
     }
 
 
-    // Method for creating and record file
+    // Method for creating and record file.
     private void createAndRecordFile(HSSFWorkbook workbook, Currency currency, String language) throws IOException {
         chooseDirectory(language);
 
@@ -235,7 +234,7 @@ public class ServiceForExportToExcel {
     }
 
 
-    // Method for choosing directory
+    // Method for choosing directory.
     private void chooseDirectory(String language) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(1);

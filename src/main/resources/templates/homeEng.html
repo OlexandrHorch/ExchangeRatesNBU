@@ -46,10 +46,15 @@
                         <option selected="selected"
                                 th:text="${currency.getCurrencyLiteralCode().descriptionEng}"
                                 th:value="${currency.getCurrencyLiteralCode()}">
+                        <option th:each="CurrencyLC : ${T(com.exchangeratesnbu.entity.CurrencyLiteralCode).values()}"
+                                th:text="${CurrencyLC.descriptionEng}"
+                                th:value="${CurrencyLC}">
                     </div>
-                    <option th:each="CurrencyLC : ${T(com.exchangeratesnbu.entity.CurrencyLiteralCode).values()}"
-                            th:text="${CurrencyLC.descriptionEng}"
-                            th:value="${CurrencyLC}">
+                    <div th:if="${currency.getCurrencyLiteralCode() == null}">
+                        <option th:each="CurrencyLC : ${T(com.exchangeratesnbu.entity.CurrencyLiteralCode).values()}"
+                                th:text="${CurrencyLC.descriptionEng}"
+                                th:value="${CurrencyLC}">
+                    </div>
                 </select>
             </td>
         </tr>
@@ -58,8 +63,14 @@
         <tr>
             <td align="right">Data</td>
             <td align="left">
-                <input type="date" size="23" name="currencyExchangeDateRequest"
-                       th:value="${currency.getCurrencyExchangeDate()}">
+                <div th:if="${currency.getCurrencyExchangeDate() != null}">
+                    <input type="date" size="23" name="currencyExchangeDateRequest"
+                           th:value="${currency.getCurrencyExchangeDate()}">
+                </div>
+                <div th:if="${currency.getCurrencyExchangeDate() == null}">
+                    <input type="date" size="23" name="currencyExchangeDateRequest"
+                           th:value="${currency.getCurrentDate()}">
+                </div>
             </td>
         </tr>
 

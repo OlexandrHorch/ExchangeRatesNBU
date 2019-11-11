@@ -38,4 +38,7 @@ public class Currency {
 
     @Column(name = "saveToTable")
     private Boolean saveToTable;
+
+    @Column(name = "currentDate")
+    private String currentDate;
 }

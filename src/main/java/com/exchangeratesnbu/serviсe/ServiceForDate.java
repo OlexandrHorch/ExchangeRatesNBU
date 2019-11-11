@@ -6,19 +6,23 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 public class ServiceForDate {
-    // Method for checking exchange date
-    public String checkingExchangeDate(String dateForComparison) {
-        GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Central"));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String currentDate = simpleDateFormat.format(calendar.getTime());
+    private GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Central"));
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+
+    // Method for checking exchange date.
+    public String checkingExchangeDate(String dateForComparison) {
+        String currentDate = generateCurrentDate();
         long dateForComparisonLong = 0;
+        long currentDateLong = 0;
+        String resultDate;
+
         try {
             dateForComparisonLong = simpleDateFormat.parse(dateForComparison).getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long currentDateLong = 0;
+
         try {
             currentDateLong = simpleDateFormat.parse(currentDate).getTime();
         } catch (ParseException e) {
@@ -26,14 +30,16 @@ public class ServiceForDate {
         }
 
         if (dateForComparisonLong > currentDateLong) {
-            dateForComparison = currentDate;
+            resultDate = currentDate;
+        } else {
+            resultDate = dateForComparison;
         }
 
-        return dateForComparison;
+        return resultDate;
     }
 
 
-    // Method for converting currency exchange date for query
+    // Method for converting currency exchange date for query.
     public String convertingCurrencyExchangeDateForQuery(String currencyExchangeDateRequest) {
         String currencyExchangeDateForQuery = "";
         String[] dateParts = currencyExchangeDateRequest.split("-");
@@ -42,5 +48,20 @@ public class ServiceForDate {
             currencyExchangeDateForQuery = String.join("", currencyExchangeDateForQuery, datePart);
         }
         return currencyExchangeDateForQuery;
+    }
+
+
+    // Method for generation current date.
+    public String generateCurrentDate() {
+        String currentDate = simpleDateFormat.format(calendar.getTime());
+        return currentDate;
+    }
+
+
+    // Method to transform date format "yyyy-MM-dd" to "yyyy.MM.dd"
+    String transformDateFormat(String dateInFormatWithDash) {
+        String dateInFormatWithDot;
+        dateInFormatWithDot = dateInFormatWithDash.replace("-", ".");
+        return dateInFormatWithDot;
     }
 }
