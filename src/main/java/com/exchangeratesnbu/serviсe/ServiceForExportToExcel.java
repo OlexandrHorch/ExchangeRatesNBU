@@ -11,20 +11,21 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ServiceForExportToExcel {
     private String directoryToSaveFile;
     private ServiceForDate serviceForDate = new ServiceForDate();
 
 
-    public void createExcelFile(Currency currency, String language) throws IOException {
+    public void createExcelFile(ArrayList<Currency> currencies, String language) throws IOException {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("exchange");
 
         fillingCellsTitleRow(workbook, sheet, language);
-        fillingCellsWithData(workbook, sheet, currency, language);
+        fillingCellsWithData(workbook, sheet, currencies, language);
         setColumnWidth(sheet);
-        createAndRecordFile(workbook, currency, language);
+        createAndRecordFile(workbook, currencies, language);
     }
 
 
@@ -102,51 +103,55 @@ public class ServiceForExportToExcel {
 
 
     // Method for filling cells with data.
-    private void fillingCellsWithData(HSSFWorkbook workbook, HSSFSheet sheet, Currency currency, String language) {
+    private void fillingCellsWithData(HSSFWorkbook workbook, HSSFSheet sheet, ArrayList<Currency> currencies, String language) {
         Row row;
         Cell cell;
         HSSFCellStyle styleForOtherRow = createStyleForOtherRow(workbook);
-        row = sheet.createRow(1);
-        row.setHeightInPoints(15);
 
-        // Filling cell numeral code.
-        cell = row.createCell(0, CellType.STRING);
-        cell.setCellValue(currency.getCurrencyNumeralCode());
-        cell.setCellStyle(styleForOtherRow);
 
-        // Filling cell literal code.
-        cell = row.createCell(1, CellType.STRING);
-        cell.setCellValue(currency.getCurrencyLiteralCode().name());
-        cell.setCellStyle(styleForOtherRow);
+        for (int i = 0; i < currencies.size(); i++) {
+            row = sheet.createRow(i + 1);
+            row.setHeightInPoints(15);
 
-        // Filling cell currency name.
-        cell = row.createCell(2, CellType.STRING);
-        if (language.equals("ukr")) {
-            cell.setCellValue(currency.getCurrencyLiteralCode().getDescription());
-        } else if (language.equals("eng")) {
-            cell.setCellValue(currency.getCurrencyLiteralCode().getDescriptionEng());
+            // Filling cell numeral code.
+            cell = row.createCell(0, CellType.STRING);
+            cell.setCellValue(currencies.get(i).getCurrencyNumeralCode());
+            cell.setCellStyle(styleForOtherRow);
+
+            // Filling cell literal code.
+            cell = row.createCell(1, CellType.STRING);
+            cell.setCellValue(currencies.get(i).getCurrencyLiteralCode().name());
+            cell.setCellStyle(styleForOtherRow);
+
+            // Filling cell currency name.
+            cell = row.createCell(2, CellType.STRING);
+            if (language.equals("ukr")) {
+                cell.setCellValue(currencies.get(i).getCurrencyLiteralCode().getDescription());
+            } else if (language.equals("eng")) {
+                cell.setCellValue(currencies.get(i).getCurrencyLiteralCode().getDescriptionEng());
+            }
+            cell.setCellStyle(styleForOtherRow);
+
+            // Filling cell currency rate.
+            cell = row.createCell(3, CellType.NUMERIC);
+            cell.setCellValue(currencies.get(i).getCurrencyRate());
+            cell.setCellStyle(styleForOtherRow);
+
+            // Filling cell total in UAH.
+            cell = row.createCell(4, CellType.NUMERIC);
+            cell.setCellValue(currencies.get(i).getCurrencyTotalInUAH());
+            cell.setCellStyle(styleForOtherRow);
+
+            // Filling cell equivalent in currency.
+            cell = row.createCell(5, CellType.NUMERIC);
+            cell.setCellValue(currencies.get(i).getCurrencyEquivalentInCurrency());
+            cell.setCellStyle(styleForOtherRow);
+
+            // Filling cell exchange date.
+            cell = row.createCell(6, CellType.STRING);
+            cell.setCellValue(serviceForDate.transformDateFormat(currencies.get(i).getCurrencyExchangeDate()));
+            cell.setCellStyle(styleForOtherRow);
         }
-        cell.setCellStyle(styleForOtherRow);
-
-        // Filling cell currency rate.
-        cell = row.createCell(3, CellType.NUMERIC);
-        cell.setCellValue(currency.getCurrencyRate());
-        cell.setCellStyle(styleForOtherRow);
-
-        // Filling cell total in UAH.
-        cell = row.createCell(4, CellType.NUMERIC);
-        cell.setCellValue(currency.getCurrencyTotalInUAH());
-        cell.setCellStyle(styleForOtherRow);
-
-        // Filling cell equivalent in currency.
-        cell = row.createCell(5, CellType.NUMERIC);
-        cell.setCellValue(currency.getCurrencyEquivalentInCurrency());
-        cell.setCellStyle(styleForOtherRow);
-
-        // Filling cell exchange date.
-        cell = row.createCell(6, CellType.STRING);
-        cell.setCellValue(serviceForDate.transformDateFormat(currency.getCurrencyExchangeDate()));
-        cell.setCellStyle(styleForOtherRow);
     }
 
 
@@ -206,23 +211,22 @@ public class ServiceForExportToExcel {
     private void setColumnWidth(HSSFSheet sheet) {
         sheet.setColumnWidth(0, 4000);
         sheet.setColumnWidth(1, 4000);
-        sheet.setColumnWidth(2, 4000);
-        sheet.setColumnWidth(3, 4000);
-        sheet.setColumnWidth(4, 6000);
-        sheet.setColumnWidth(5, 6000);
+        sheet.setColumnWidth(2, 7000);
+        sheet.setColumnWidth(3, 4500);
+        sheet.setColumnWidth(4, 4500);
+        sheet.setColumnWidth(5, 4500);
         sheet.autoSizeColumn(6);
     }
 
 
     // Method for creating and record file.
-    private void createAndRecordFile(HSSFWorkbook workbook, Currency currency, String language) throws IOException {
+    private void createAndRecordFile(HSSFWorkbook workbook, ArrayList<Currency> currencies, String language) throws IOException {
         chooseDirectory(language);
 
         if (directoryToSaveFile != null) {
             String filePathName = directoryToSaveFile
                     + "/ExchangeRatesNBU_"
-                    + currency.getCurrencyExchangeDate() + "_"
-                    + currency.getCurrencyLiteralCode()
+                    + currencies.get(0).getCurrencyExchangeDate()
                     + ".xls";
             File file = new File(filePathName);
             FileOutputStream outFile = new FileOutputStream(file);

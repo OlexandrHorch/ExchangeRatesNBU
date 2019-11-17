@@ -30,6 +30,7 @@
     </table>
 </header>
 
+
 <form action="/eng" method="get">
     <!--Input data-->
     <table align="center" width="95%" cellpadding="5">
@@ -41,16 +42,20 @@
         <tr>
             <td align="right" width="50%">Currency</td>
             <td align="left" width="50%">
-                <select name="currencyLiteralCodeRequest">
-                    <div th:if="${currency.getCurrencyLiteralCode() != null}">
-                        <option selected="selected"
-                                th:text="${currency.getCurrencyLiteralCode().descriptionEng}"
-                                th:value="${currency.getCurrencyLiteralCode()}">
+                <select size="5" multiple="multiple" name="currencyLiteralCodeRequest">
+                    <div th:if="${currencies.size() > 0}">
+                        <div th:each="currency:${currencies}">
+                            <option selected="selected"
+                                    th:text="${currency.getCurrencyLiteralCode().descriptionEng}"
+                                    th:value="${currency.getCurrencyLiteralCode()}">
+                            </option>
+                        </div>
                         <option th:each="CurrencyLC : ${T(com.exchangeratesnbu.entity.CurrencyLiteralCode).values()}"
                                 th:text="${CurrencyLC.descriptionEng}"
                                 th:value="${CurrencyLC}">
+                        </option>
                     </div>
-                    <div th:if="${currency.getCurrencyLiteralCode() == null}">
+                    <div th:if="${currencies.size() == 0}">
                         <option th:each="CurrencyLC : ${T(com.exchangeratesnbu.entity.CurrencyLiteralCode).values()}"
                                 th:text="${CurrencyLC.descriptionEng}"
                                 th:value="${CurrencyLC}">
@@ -59,17 +64,16 @@
             </td>
         </tr>
 
-        <!--currency data-->
+        <!--currency date-->
         <tr>
-            <td align="right">Data</td>
+            <td align="right">Date</td>
             <td align="left">
-                <div th:if="${currency.getCurrencyExchangeDate() != null}">
+                <div th:if="${currencies.size() > 0}">
                     <input type="date" size="23" name="currencyExchangeDateRequest"
-                           th:value="${currency.getCurrencyExchangeDate()}">
+                           th:value="${currencies.get(0).getCurrencyExchangeDate()}">
                 </div>
-                <div th:if="${currency.getCurrencyExchangeDate() == null}">
-                    <input type="date" size="23" name="currencyExchangeDateRequest"
-                           th:value="${currency.getCurrentDate()}">
+                <div th:if="${currencies.size() == 0}">
+                    <input type="date" size="23" name="currencyExchangeDateRequest">
                 </div>
             </td>
         </tr>
@@ -78,14 +82,13 @@
         <tr>
             <td align="right">Amount in UAH</td>
             <td align="left">
-                <div th:if="${currency.getCurrencyTotalInUAH() != null}">
+                <div th:if="${currencies.size() > 0}">
                     <input type="text" size="23" name="currencyTotalInUAH"
-                           th:value="${currency.getCurrencyTotalInUAH()}">
+                           th:value="${currencies.get(0).getCurrencyTotalInUAH()}">
                 </div>
-
-                <div th:if="${currency.getCurrencyTotalInUAH() == null}">
+                <div th:if="${currencies.size() == 0}">
                     <input type="text" size="23" name="currencyTotalInUAH"
-                           placeholder="enter the amount in UAH">
+                           placeholder="введіть суму в грн.">
                 </div>
             </td>
         </tr>
@@ -94,17 +97,17 @@
         <tr>
             <td align="right">Save the result to a table</td>
             <td align="left">
-                <div th:if="${currency.getSaveToTable() == true}">
-                    <input type="radio" name="saveToTable" value="true" checked> yes
-                    <input type="radio" name="saveToTable" value="false"> no
+                <div th:if="${currencies.size() > 0}">
+                    <div th:if="${currencies.get(0).getSaveToTable() == true}">
+                        <input type="radio" name="saveToTable" value="true" checked> yes
+                        <input type="radio" name="saveToTable" value="false"> no
+                    </div>
+                    <div th:if="${currencies.get(0).getSaveToTable() == false}">
+                        <input type="radio" name="saveToTable" value="true"> yes
+                        <input type="radio" name="saveToTable" value="false" checked> no
+                    </div>
                 </div>
-
-                <div th:if="${currency.getSaveToTable() == false}">
-                    <input type="radio" name="saveToTable" value="true"> yes
-                    <input type="radio" name="saveToTable" value="false" checked> no
-                </div>
-
-                <div th:if="${currency.getSaveToTable() == null}">
+                <div th:if="${currencies.size() == 0}">
                     <input type="radio" name="saveToTable" value="true"> yes
                     <input type="radio" name="saveToTable" value="false" checked> no
                 </div>
@@ -123,7 +126,7 @@
     <!--Response-->
     <br>
     <table align="center" width="50%" cellpadding="4">
-        <div th:if="${currency.getCurrencyExchangeDate() != null}">
+        <div th:if="${currencies.size() > 0}">
             <div>
                 <tr>
                     <td align="center" width="12%"><b>Numeral code</b></td>
@@ -133,23 +136,29 @@
                     <td align="center" width="25%"><b>Equivalent UAH amount in currency</b></td>
                 </tr>
 
-                <tr>
-                    <td align="center">
-                        <text th:text="${currency.getCurrencyNumeralCode()}"></text>
-                    </td>
-                    <td align="center">
-                        <text th:text="${currency.getCurrencyLiteralCode()}"></text>
-                    </td>
-                    <td align="center">
-                        <text th:text="${currency.getCurrencyLiteralCode().descriptionEng}"></text>
-                    </td>
-                    <td align="center">
-                        <text th:text="${currency.getCurrencyRate()}"></text>
-                    </td>
-                    <td align="center">
-                        <text th:text="${currency.getCurrencyEquivalentInCurrency()}"></text>
-                    </td>
-                </tr>
+                <div th:each="currency:${currencies}">
+                    <div th:if="${currency.getCurrencyExchangeDate() != null}">
+                        <div>
+                            <tr>
+                                <td align="center">
+                                    <text th:text="${currency.getCurrencyNumeralCode()}"></text>
+                                </td>
+                                <td align="center">
+                                    <text th:text="${currency.getCurrencyLiteralCode()}"></text>
+                                </td>
+                                <td align="center">
+                                    <text th:text="${currency.getCurrencyLiteralCode().descriptionEng}"></text>
+                                </td>
+                                <td align="center">
+                                    <text th:text="${currency.getCurrencyRate()}"></text>
+                                </td>
+                                <td align="center">
+                                    <text th:text="${currency.getCurrencyEquivalentInCurrency()}"></text>
+                                </td>
+                            </tr>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </table>

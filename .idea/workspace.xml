@@ -4,15 +4,11 @@
     <list default="true" id="bece6d5e-4696-476c-b0ba-070cb277f011" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/exchangeratesnbu/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/exchangeratesnbu/controller/HomeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/exchangeratesnbu/entity/Currency.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/exchangeratesnbu/entity/Currency.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/exchangeratesnbu/serviсe/ServiceForDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/exchangeratesnbu/serviсe/ServiceForDate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/exchangeratesnbu/request/CurrencyRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/exchangeratesnbu/request/CurrencyRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/exchangeratesnbu/serviсe/ServiceForExportToExcel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/exchangeratesnbu/serviсe/ServiceForExportToExcel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/homeEng.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/homeEng.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/exchangeratesnbu/controller/HomeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/exchangeratesnbu/controller/HomeController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/exchangeratesnbu/entity/Currency.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/exchangeratesnbu/entity/Currency.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/exchangeratesnbu/serviсe/ServiceForDate.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/exchangeratesnbu/serviсe/ServiceForDate.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/exchangeratesnbu/serviсe/ServiceForExportToExcel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/exchangeratesnbu/serviсe/ServiceForExportToExcel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/templates/homeEng.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/homeEng.html" afterDir="false" />
     </list>
@@ -41,7 +37,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Theory" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -49,9 +45,9 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.exchangeratesnbu.entity" />
       <recent name="com.exchangeratesnbu.serviсe" />
       <recent name="com.exchangeratesnbu" />
-      <recent name="com.exchangeratesnbu.entity" />
       <recent name="com.exchangeratesnbu.controller" />
       <recent name="com.exchangeratesnbuwithhtml.requests" />
     </key>

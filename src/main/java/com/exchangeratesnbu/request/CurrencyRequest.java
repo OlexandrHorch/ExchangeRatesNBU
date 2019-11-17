@@ -65,16 +65,20 @@ public class CurrencyRequest extends Component {
     private void parseFromJson(String json) {
         if (json.equals("[]")) {
             currency.setCurrencyNumeralCode(0);
-            currency.setCurrencyName("__________");
+            currency.setCurrencyName("data is missing");
             currency.setCurrencyRate(0.0);
         } else {
+            // TODO: зробити перевірку на відповідність цифнам та видалити не цифри.
             currency.setCurrencyNumeralCode(Integer.parseInt(json.substring(json.indexOf("r030") + 6, json.indexOf("r030") + 9)));
+            System.out.println("getCurrencyNumeralCode: " + currency.getCurrencyNumeralCode()); // TODO: Del!
+
             currency.setCurrencyName(json.substring(json.indexOf("txt") + 6, json.indexOf("\",\"rate\"")));
             currency.setCurrencyRate(Double.parseDouble(json.substring(json.indexOf("rate") + 6, json.indexOf(",\"cc\""))));
         }
     }
 
 
+    // Method for make total in UAH equivalent in currency.
     public Currency makeEquivalent(Currency currency) {
         String totalInUAH = serviceForNumber.checkAndEditTotalInUAH(currency);
         currency.setCurrencyTotalInUAH(totalInUAH);
