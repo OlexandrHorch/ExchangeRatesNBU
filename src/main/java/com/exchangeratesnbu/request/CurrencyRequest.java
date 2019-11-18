@@ -68,10 +68,8 @@ public class CurrencyRequest extends Component {
             currency.setCurrencyName("data is missing");
             currency.setCurrencyRate(0.0);
         } else {
-            // TODO: зробити перевірку на відповідність цифнам та видалити не цифри.
-            currency.setCurrencyNumeralCode(Integer.parseInt(json.substring(json.indexOf("r030") + 6, json.indexOf("r030") + 9)));
-            System.out.println("getCurrencyNumeralCode: " + currency.getCurrencyNumeralCode()); // TODO: Del!
-
+            currency.setCurrencyNumeralCode(Integer.parseInt(json.substring(json.indexOf("r030") + 6, json.indexOf("r030") + 9)
+                    .replace(',', ' ').trim()));
             currency.setCurrencyName(json.substring(json.indexOf("txt") + 6, json.indexOf("\",\"rate\"")));
             currency.setCurrencyRate(Double.parseDouble(json.substring(json.indexOf("rate") + 6, json.indexOf(",\"cc\""))));
         }
